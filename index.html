@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>Prefill Pen on CodePen</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <h1>Prefilling Pens on CodePen</h1>
+
+  <h2>POST with a on-page &lt;form> with JSON data inline</h2>
+
+  <pre><code>&lt;form action=&quot;http://codepen.io/pen/define&quot; method=&quot;POST&quot; target=&quot;_blank&quot;&gt;
+
+    &lt;input type=&quot;hidden&quot; name=&quot;data&quot; value=&#39;{&quot;title&quot;: &quot;New Pen!&quot;, &quot;html&quot;: &quot;&amp;lt;div&gt;Hello, World!&amp;lt;/div&gt;&quot;}&#39;&gt;
+
+    &lt;input type=&quot;submit&quot; value=&quot;Create New Pen with Prefilled Data&quot;&gt;
+
+  &lt;/form&gt;</code></pre>
+
+  <h3>Demo</h3>
+  
+  <form action="http://codepen.io/pen/define" method="POST" target="_blank">
+
+    <input type="hidden" name="data" value='{"title": "New Pen!", "html": "&lt;div>Hello, World!&lt;/div>"}'>
+
+    <input type="submit" value="Create New Pen with Prefilled Data">
+
+  </form>
+
+
+  <h2>Add Wee Buttons to Code Blocks</h2>
+
+  <pre class="codepen-able" data-type="html"><code>&lt;h1>Move me&lt;h1></code></pre>
+
+
+
+
+  <script src="jquery-2.0.3.min.js"></script>
+  <script>
+  $(".codepen-able").each(function() {
+
+    var el = $(this);
+    var type = el.data("type");
+    var codeInside = el.find("code");
+    var isCodeInside = codeInside.length;
+    var HTML;
+
+    if (codeInside) {
+      HTML = codeInside.html();
+    } else {
+      HTML = el.html();
+    }
+
+    var data = {
+      title              : "New Pen!",
+      description        : "It's about stuff.",
+      html               : HTML,
+      html_pre_processor : "none",
+      css                : "html { color: red; }",
+      css_pre_processor  : "none",
+      css_starter        : "neither",
+      css_prefix_free    : false,
+      js                 : "console.log('hello');",
+      js_pre_processor   : "none",
+      js_modernizr       : false,
+      js_library         : "",
+      html_classes       : "",
+      css_external       : "",
+      js_external        : ""
+    };
+
+    var JSONstring = JSON.stringify(data);
+
+    var form = 
+      '<form action="http://codepen.io/pen/define" method="POST" target="_blank">' + 
+        '<input type="hidden" name="data" value="' + 
+          JSONstring + 
+          '">' + 
+        '<input type="submit" value="Create New Pen with Prefilled Data" class="codepen-mover-button">' +
+      '</form>';
+
+    el.append(form);
+
+  });
+  </script>
+
+</body>
+
+</html>
