@@ -1,3 +1,3 @@
-# In Progress
+# POST data to CodePen.io to prefill code in a new Pen
 
-Examples of how you can POST data to CodePen
+[See how it all works.](http://codepen.github.io/PrefillPen)
