@@ -1,159 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-  <meta charset="UTF-8">
+    <title>Prefill Pen on CodePen</title>
 
-  <title>Prefill Pen on CodePen</title>
-
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-  <h1>Prefilling Pens on CodePen</h1>
-
-  <p>There is a <a href="https://github.com/CodePen/PrefillPen">GitHub Repo</a> for this and <a href="http://blog.codepen.io/documentation/features/can-i-pre-fill-codepen-editors-with-code-i-send/">Docs page</a>.
-
-  <h2>POST with a on-page &lt;form> with JSON data inline</h2>
-
-  <p>Just POST to http://codepen.io/pen/define with <code>data</code> defined as a string of JSON. See the table below about what can go in the JSON.</p>
-
-  <figure>
-  <pre><code>&lt;form action=&quot;http://codepen.io/pen/define&quot; method=&quot;POST&quot; target=&quot;_blank&quot;&gt;
-
-  &lt;input type=&quot;hidden&quot; name=&quot;data&quot; value=&#39;{&quot;title&quot;: &quot;New Pen!&quot;, &quot;html&quot;: &quot;&amp;lt;div&gt;Hello, World!&amp;lt;/div&gt;&quot;}&#39;&gt;
-
-  &lt;input type=&quot;submit&quot; value=&quot;Create New Pen with Prefilled Data&quot;&gt;
-
-&lt;/form&gt;</code></pre>
-  <figcaption>This HTML will work exactly as is. Demo: <form action="http://codepen.io/pen/define" method="POST" target="_blank">
-
-    <input type="hidden" name="data" value='{"title": "New Pen!", "html": "&lt;div>Hello, World!&lt;/div>"}'>
-
-    <input type="submit" value="Create New Pen with Prefilled Data">
-
-  </form></figcaption>
-  </figure>  
-  
-
-  <h2>All Possible JSON</h2>
-
-  <p>Everything is optional</p>
-
-  <pre class="prettyprint"><code>{
-  title              : "New Pen!",
-  description        : "It's about stuff.",
-  html               : "&lt;div>HTML in here.&lt;/div>",
-  html_pre_processor : "none" || "slim" || "haml" || "markdown",
-  css                : "html { color: red; }",
-  css_pre_processor  : "none" || "less" || "scss" || "sass",
-  css_starter        : "normalize" || "reset" || "neither",
-  css_prefix_free    : "true" || "false",
-  js                 : "alert('test');",
-  js_pre_processor   : "none" || "coffeescript",
-  js_modernizr       : "true" || "false",
-  js_library         : "jquery" || "mootools" || "prototype",
-  html_classes       : "loading",
-  css_external       : "http://yoursite.com/style.css",
-  js_external        : "http://yoursite.com/script.js"
-}</code></pre>
-
-
-  <h2>Dynamically Add CodePen Buttons to Blocks of Code</h2>
-
-  <p>This depends on &lt;pre> tags with a class name of "codepen-able". Which editor it gets sent to depends on data-type, like data-type="js". You can change all that, that's just this demo.</p>
-
-  <pre class="codepen-able" data-type="html"><code>&lt;div>
-  &lt;p>I'm example HTML&lt;/p>
-&lt;div></code></pre>
-
-  <pre class="codepen-able" data-type="css"><code>.module {
-  .padding: 1rem;
-}
-.module::after {
-  content: "test";
-}</code></pre>
-
-  <pre class="codepen-able" data-type="js"><code>var string = "test string";
-console.log(string);
-
-function test() {
-  return 'test';
-}</code></pre>
-
-
-
-
-  <script src="jquery-2.0.3.min.js"></script>
-  <script>
-  $(".codepen-able").each(function() {
-
-    var el = $(this),
-        type = el.data("type"),
-        codeInside = el.find("code"),
-        isCodeInside = codeInside.length,
-        HTML = "",
-        CSS = "",
-        JS = "";
-    
-    if (type == "html") {
-      if (codeInside) {
-        HTML = codeInside.html();
-      } else {
-        HTML = el.html();
+    <meta
+      http-equiv="refresh"
+      content="2;url=https://blog.codepen.io/documentation/api/prefill/"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
       }
-    } else if (type == "css") {
-      if (codeInside) {
-        CSS = codeInside.html();
-      } else {
-        CSS = el.html();
+      html {
+        background: #222;
       }
-    } else if (type == "js") {
-      if (codeInside) {
-        JS = codeInside.html();
-      } else {
-        JS = el.html();
+      body {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif;
+        line-height: 1.4;
       }
-    }
 
-    var data = {
-      title              : "",
-      description        : "",
-      html               : HTML,
-      html_pre_processor : "none",
-      css                : CSS,
-      css_pre_processor  : "none",
-      css_starter        : "neither",
-      css_prefix_free    : false,
-      js                 : JS,
-      js_pre_processor   : "none",
-      js_modernizr       : false,
-      js_library         : "",
-      html_classes       : "",
-      css_external       : "",
-      js_external        : ""
-    };
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light",
+          "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial,
+          "Lucida Grande", Sans-Serif;
+        line-height: 1.2;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
 
-    var JSONstring = 
-      JSON.stringify(data)
-      // Quotes will screw up the JSON
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&apos;");
+  <body>
+    <h1>Prefilling Pens on CodePen</h1>
 
-    var form = 
-      '<form action="http://codepen.io/pen/define" method="POST" target="_blank">' + 
-        '<input type="hidden" name="data" value=\'' + 
-          JSONstring + 
-          '\'>' + 
-        '<input type="image" src="cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">' +
-      '</form>';
-
-    el.append(form);
-
-  });
-  </script>
-
-</body>
-
+    <p>
+      Learn more on our
+      <a href="https://blog.codepen.io/documentation/api/prefill/">Docs page</a
+      >.
+    </p>
+  </body>
 </html>
